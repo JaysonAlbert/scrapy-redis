@@ -109,12 +109,13 @@ class PriorityQueue(Base):
         timeout not support in this queue class
         """
         # use atomic range/remove using multi/exec
-        pipe = self.server.pipeline()
-        pipe.multi()
-        pipe.zrange(self.key, 0, 0).zremrangebyrank(self.key, 0, 0)
-        results, count = pipe.execute()
+        # pipe = self.server.pipeline()
+        # pipe.multi()
+        # pipe.zrange(self.key, 0, 0).zremrangebyrank(self.key, 0, 0)
+        # results, count = pipe.execute()
+        results = self.server.zpopmin(self.key, 1)
         if results:
-            return self._decode_request(results[0])
+            return self._decode_request(results[0][0])
 
 
 class LifoQueue(Base):

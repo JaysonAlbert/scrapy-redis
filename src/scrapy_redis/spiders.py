@@ -1,4 +1,4 @@
-from scrapy import signals
+from scrapy import signals, Request
 from scrapy.exceptions import DontCloseSpider
 from scrapy.spiders import Spider, CrawlSpider
 
@@ -111,7 +111,8 @@ class RedisMixin(object):
 
         """
         url = bytes_to_str(data, self.redis_encoding)
-        return self.make_requests_from_url(url)
+        return Request(url)
+        # return self.make_requests_from_url(url)
 
     def schedule_next_requests(self):
         """Schedules a request if available"""
